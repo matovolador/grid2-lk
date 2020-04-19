@@ -290,6 +290,7 @@ end
 function Grid2:GroupChanged(event)
 -- print("GroupChanged", event)
 	local _, instType = IsInInstance()
+	local realInstance = instType
 
 	if instType == "none" then
 		local raidMembers = GetNumRaidMembers()
@@ -346,7 +347,11 @@ function Grid2:GroupChanged(event)
 
 	if groupType ~= instType then
 		groupType = instType
-		self:SendMessage("Grid_GroupTypeChanged", groupType)
+		if realInstance == "arena" or realInstance == "pvp" then
+			self:SendMessage("Grid_GroupTypeChanged", realInstance)
+		else
+			self:SendMessage("Grid_GroupTypeChanged", groupType)
+		end
 	end
 
 	self:UpdateRoster()
